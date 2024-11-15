@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpador de Texto</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 95%;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+        }
+        textarea {
+            flex: 1;
+            height: 200px;
+            resize: vertical;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #333;
+            box-sizing: border-box;
+            min-width: 300px;
+        }
+        .board-left, .board-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .buttons-left, .buttons-right {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .clean-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .copy-btn {
+            background-color: #007BFF;
+            color: white;
+        }
+        .add-btn {
+            background-color: #FF9800;
+            color: white;
+        }
+        .dropdown-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .dropdown {
+            position: relative;
+            width: 100%;
+        }
+        .dropdown-toggle {
+            background-color: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            user-select: none;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .dropdown-toggle:hover {
+            background-color: #444;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown-menu label {
+            display: block;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
+        }
+        .dropdown-menu label:hover {
+            background-color: #f0f0f0;
+        }
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #28a745;
+        }
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Limpador de Texto</h1>
+        <div class="content">
+            <!-- Quadro esquerdo com botões abaixo -->
+            <div class="board-left">
+                <textarea id="inputText" placeholder="Digite seu texto aqui..."></textarea>
+                <div class="buttons-left">
+                    <button class="clean-btn" onclick="limparTexto()">Limpar Texto</button>
+                    <div class="dropdown-container">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle" onclick="toggleDropdown()">Opções &#9660;</div>
+                            <div class="dropdown-menu">
+                                <label><input type="checkbox" value="CONSULTA.OFTALMOLOGICA"> CONSULTA OFTALMOLOGICA</label>
+                                <label><input type="checkbox" value="MAPEAMENTO.DE.RETINA"> MAPEAMENTO DE RETINA</label>
+                                <label><input type="checkbox" value="PAQUIMETRIA"> PAQUIMETRIA</label>
+                                <label><input type="checkbox" value="OCT.GLAUCOMA"> OCT GLAUCOMA</label>
+                                <label><input type="checkbox" value="OCT.RETINA"> OCT RETINA</label>
+                                <label><input type="checkbox" value="RETINOGRAFIA"> RETINOGRAFIA</label>
+                                <label><input type="checkbox" value="BIOMETRIA"> BIOMETRIA</label>
+                                <label><input type="checkbox" value="MICROSCOPIA"> MICROSCOPIA</label>
+                                <label><input type="checkbox" value="CERATOSCOPIA"> CERATOSCOPIA</label>
+                                <label><input type="checkbox" value="ULTRASSONOGRAFIA"> ULTRASSONOGRAFIA</label>
+                                <label><input type="checkbox" value="PACOTE.EXAMES.CENTRAL.DA.VISAO"> PACOTE EXAMES CENTRAL DA VISAO</label>
+                                <label><input type="checkbox" value="CAPSULOTOMIA.YAG"> CAPSULOTOMIA YAG</label>
+                                <label><input type="checkbox" value="CAMPIMETRIA"> CAMPIMETRIA</label>
+                                <label><input type="checkbox" value="ANGIOFLUORESCEINOGRAFIA"> ANGIOFLUORESCEINOGRAFIA</label>
+                                <label><input type="checkbox" value="FOTOCOAGULACAO.A.LASER"> FOTOCOAGULACAO A LASER</label>
+                                <label><input type="checkbox" value="IRIDECTOMIA"> IRIDECTOMIA</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-btn" onclick="adicionarOpcoes()">Adicionar</button>
+                </div>
+            </div>
+
+            <!-- Quadro direito com botão abaixo -->
+            <div class="board-right">
+                <textarea id="outputText" readonly placeholder="Texto Limpo..."></textarea>
+                <div class="buttons-right">
+                    <button class="copy-btn" onclick="copiarTexto()">Copiar Texto</button>
+                </div>
+            </div>
+        </div>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        function limparTexto() {
+            const input = document.getElementById('inputText').value;
+            const output = input
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+                .replace(/\s+/g, ".") // Substitui espaços por ponto
+                .toUpperCase(); // Deixa em maiúsculo
+            document.getElementById('outputText').value = output;
+        }
+
+        function adicionarOpcoes() {
+            const checkboxes = document.querySelectorAll('.dropdown-menu input[type="checkbox"]:checked');
+            let selectedValues = '';
+            checkboxes.forEach(checkbox => {
+                selectedValues += checkbox.value + ". ";
+            });
+            document.getElementById('outputText').value += " " + selectedValues.trim();
+        }
+
+        function copiarTexto() {
+            const output = document.getElementById('outputText');
+            output.select();
+            document.execCommand('copy');
+            document.getElementById('message').textContent = "Texto copiado!";
+            setTimeout(() => {
+                document.getElementById('message').textContent = "";
+            }, 2000);
+        }
+
+        function toggleDropdown() {
+            const menu = document.querySelector('.dropdown-menu');
+            menu.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>
